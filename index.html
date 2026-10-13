@@ -519,6 +519,15 @@ main{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:14px;
 .ai-checks label{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--dim);cursor:pointer;line-height:1.55;}
 .ai-checks input{margin-top:2px;}
 .ai-note{margin:6px 0;font-size:11.5px;line-height:1.7;color:var(--dim);}
+
+/* 免費 Key 引導（選到 Google Gemini 時才顯示） */
+.ai-free{margin:2px 0 12px;padding:10px 12px 11px;background:#121a26;border:1px solid var(--line);border-radius:10px;}
+.ai-free[hidden]{display:none;}
+.ai-free-title{margin:0 0 7px;font-size:12.5px;font-weight:700;color:var(--fg);}
+.ai-free-steps{margin:0 0 9px;padding-left:19px;font-size:11.5px;line-height:1.8;color:var(--dim);}
+.ai-free-steps li{margin:0 0 2px;}
+.ai-free .ai-note{margin:8px 0 0;}
+
 .ai-dialog-actions{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap;}
 .ai-spacer{flex:1 1 auto;}
 
@@ -716,7 +725,7 @@ main{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:14px;
   <p>App 的題庫、批改與解題全部內建於檔案之中，運作時不會發出任何網絡請求，因此可以完全離線使用（飛航模式亦可）。App 內亦沒有任何廣告、追蹤器或第三方分析工具。唯一例外是下面第 4 節所述的選用「AI 出題」功能。</p>
 
   <h3>4. AI 出題功能（可選、預設關閉）</h3>
-  <p>當你在練習模式自行開啟「AI 出題」，並在「AI 設定」填入 API 金鑰與服務商端點後，App 才會把你的出題要求（練習主題、小主題、難度與題型）直接送到<strong>你自己填寫的 AI 服務商</strong>（預設為 DeepSeek，亦可改用其他 OpenAI 相容端點或本機 Ollama），以換取新題目。請求由你的裝置直接發出，不經我們的伺服器（本 App 沒有伺服器），所以我們無法看到你的 API 金鑰、送出的提示或生成結果。API 金鑰與 AI 產生的題目只存在你的瀏覽器／裝置內（localStorage）；AI 題目是即時生成、用完即棄的，不會上傳你的作答紀錄。若你不想把任何內容送到第三方，只要保持此開關關閉即可，其餘功能完全離線運作。</p>
+  <p>當你在練習模式自行開啟「AI 出題」，並在「AI 設定」填入 API 金鑰與服務商端點後，App 才會把你的出題要求（練習主題、小主題、難度與題型）直接送到<strong>你自己填寫的 AI 服務商</strong>（預設為 DeepSeek；亦可選用有免費額度的 Google Gemini、其他 OpenAI 相容端點，或設於自己電腦的本機 Ollama），以換取新題目。請求由你的裝置直接發出，不經我們的伺服器（本 App 沒有伺服器），所以我們無法看到你的 API 金鑰、送出的提示或生成結果。API 金鑰與 AI 產生的題目只存在你的瀏覽器／裝置內（localStorage）；AI 題目是即時生成、用完即棄的，不會上傳你的作答紀錄。若你不想把任何內容送到第三方，只要保持此開關關閉即可，其餘功能完全離線運作。</p>
 
   <h3>5. 兒童私隱</h3>
   <p>App 適合中學生使用。由於我們不收集任何資料，因此不會收集兒童的個人資料；家長及教師可以放心讓學生使用。若學生使用 AI 出題功能，請先由家長或教師協助設定 API 金鑰，並留意所用服務商的條款與費用。</p>
@@ -752,7 +761,7 @@ main{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:14px;
   <p>All questions, marking and worked solutions are bundled inside the app files. The app makes no network requests while running and therefore works fully offline (aeroplane mode included). There are no ads, trackers or third-party analytics. The one exception is the optional AI question generator described in section 4 below.</p>
 
   <h3>4. AI question generator (optional, off by default)</h3>
-  <p>Only after you switch on “AI questions” in practice mode and enter an API key and provider endpoint under “AI settings” will the app send your request (practice topic, subtopic, level and question type) directly to <strong>the AI provider you chose</strong> (DeepSeek by default; any OpenAI-compatible endpoint or a local Ollama server also works) in order to receive new questions. The request goes straight from your device, not through any server of ours (this app has no server), so we cannot see your API key, your prompts or the generated questions. The API key and any AI-generated questions are stored only in your browser / device (localStorage); AI questions are generated on the fly and discarded afterwards, and your answer history is never uploaded. If you prefer not to send anything to a third party, simply leave the switch off — everything else works fully offline.</p>
+  <p>Only after you switch on “AI questions” in practice mode and enter an API key and provider endpoint under “AI settings” will the app send your request (practice topic, subtopic, level and question type) directly to <strong>the AI provider you chose</strong> (DeepSeek by default; Google Gemini with its free tier, any OpenAI-compatible endpoint, or a local Ollama server on your own computer also work) in order to receive new questions. The request goes straight from your device, not through any server of ours (this app has no server), so we cannot see your API key, your prompts or the generated questions. The API key and any AI-generated questions are stored only in your browser / device (localStorage); AI questions are generated on the fly and discarded afterwards, and your answer history is never uploaded. If you prefer not to send anything to a third party, simply leave the switch off — everything else works fully offline.</p>
 
   <h3>5. Children's privacy</h3>
   <p>The app is designed for secondary-school students. Because we collect no data at all, we collect no personal data from children, and parents and teachers can let students use it freely. If a student uses the AI question generator, please have a parent or teacher help set up the API key, and note the chosen provider's terms and costs.</p>
@@ -903,6 +912,18 @@ main{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:14px;
     <label class="ai-field" for="aiKey"><span data-i18n="aiKey">API Key</span>
       <input id="aiKey" type="password" autocomplete="off" spellcheck="false" placeholder="sk-…">
     </label>
+
+    <!-- 免費 Key 引導：只有選到有免費層的服務（Google Gemini）時顯示，由 app.js 切換 hidden -->
+    <div class="ai-free" id="aiFreeBox" hidden>
+      <p class="ai-free-title" data-i18n="aiFreeTitle">🔑 想免費用？Google Gemini 有免費額度</p>
+      <ol class="ai-free-steps">
+        <li data-i18n="aiFreeStep1">按下面按鈕開 Google AI Studio（用 Google 帳號登入）。</li>
+        <li data-i18n="aiFreeStep2">按「Create API key」建立金鑰，複製 AIza… 開頭那串字元。</li>
+        <li data-i18n="aiFreeStep3">貼回上面的「API 金鑰」欄，再按「儲存並啟用」。</li>
+      </ol>
+      <button id="btnAiKeyPage" class="ghost-btn small" type="button" data-i18n="aiGetKeyBtn">開啟 AI Studio 取得免費 Key</button>
+      <p class="ai-note" data-i18n="aiFreeNote">免費層有每日額度；用完會提示並自動改用題庫題目，不會收費、不會自動扣款、不用信用卡。模型可填 gemini-2.5-flash（預設）或 gemini-2.0-flash。</p>
+    </div>
 
     <div class="ai-checks">
       <label><input id="aiJson" type="checkbox"><span data-i18n="aiJsonMode">要求 JSON 模式（較穩定；部分服務不支援）</span></label>
@@ -35875,7 +35896,7 @@ if (typeof console !== 'undefined' && console.warn) {
 
       /* ── v6 · AI 出題（選用功能；API Key 只存本機） ── */
       aiSecTitle: 'AI 出題',
-      aiSecTip: '（選用：用你自己的 AI 服務生成新題，與題庫題目混合練習）',
+      aiSecTip: '（選用：用你自己的 AI 服務生成新題，與題庫題目混合練習；Google Gemini 有免費額度）',
       aiSettingsBtn: '⚙️ AI 設定',
       aiOff: 'AI 出題：關',
       aiOn: 'AI 出題：開',
@@ -35901,7 +35922,13 @@ if (typeof console !== 'undefined' && console.warn) {
       aiFailed: 'AI 出題失敗：{msg}（已改用題庫題目）',
       aiNotReady: 'AI 未能使用：{msg}（已改用題庫題目）',
       aiTag: '🤖 AI 出題',
-      aiNeedKey: '請先在「⚙️ AI 設定」填入 API Key 並儲存。'
+      aiNeedKey: '請先在「⚙️ AI 設定」填入 API Key 並儲存。',
+      aiFreeTitle: '🔑 想免費用？Google Gemini 有免費額度',
+      aiFreeStep1: '按下面按鈕開 Google AI Studio（用 Google 帳號登入）。',
+      aiFreeStep2: '按「Create API key」建立金鑰，複製 AIza… 開頭那串字元。',
+      aiFreeStep3: '貼回上面的「API 金鑰」欄，再按「儲存並啟用」。',
+      aiGetKeyBtn: '開啟 AI Studio 取得免費 Key',
+      aiFreeNote: '免費層有每日額度；用完會提示並自動改用題庫題目，不會收費、不會自動扣款、不用信用卡。模型可填 gemini-2.5-flash（預設）或 gemini-2.0-flash。'
     },
 
     en: {
@@ -36054,7 +36081,13 @@ if (typeof console !== 'undefined' && console.warn) {
       aiFailed: 'AI generation failed: {msg} (showing a bank question instead)',
       aiNotReady: 'AI is not usable: {msg} (showing a bank question instead)',
       aiTag: '🤖 AI question',
-      aiNeedKey: 'Open "⚙️ AI settings" and enter your API key first.'
+      aiNeedKey: 'Open "⚙️ AI settings" and enter your API key first.',
+      aiFreeTitle: '🔑 Want it free? Google Gemini has a free tier',
+      aiFreeStep1: 'Click the button below to open Google AI Studio (sign in with a Google account).',
+      aiFreeStep2: 'Click "Create API key" and copy the key that starts with AIza….',
+      aiFreeStep3: 'Paste it into the "API key" field above, then press "Save and enable".',
+      aiGetKeyBtn: 'Open AI Studio for a free key',
+      aiFreeNote: 'The free tier has a daily quota; when it runs out you get a notice and the app falls back to bank questions. No charges, no auto-billing, no credit card. Model name: gemini-2.5-flash (default) or gemini-2.0-flash.'
     }
   };
 
@@ -36151,24 +36184,35 @@ if (typeof console !== 'undefined' && console.warn) {
 (function (root) {
   'use strict';
 
-  var VERSION = '6.0.0';
+  var VERSION = '6.1.0';
   var SETTINGS_KEY = 'm2ai.settings';
   var POOL_KEY = 'm2ai.pool';
   var MAX_POOL = 40;
   var MAX_COUNT = 5;
   var TIMEOUT_MS = 60000;
 
-  /* ── 服務商預設（全部走 OpenAI 相容的 /chat/completions 介面） ── */
+  /* ── 服務商預設（全部走 OpenAI 相容的 /chat/completions 介面） ──
+     labelEn：英文介面用的名稱；keyUrl／freeKey：對話框顯示「免費取得 Key」引導用
+     （目前只有 Google Gemini 提供免費層，其餘服務都要自己付費或自備端點） */
   var PROVIDERS = {
     deepseek: {
-      id: 'deepseek', label: 'DeepSeek', base: 'https://api.deepseek.com/v1',
+      id: 'deepseek', label: 'DeepSeek', labelEn: 'DeepSeek',
+      base: 'https://api.deepseek.com/v1',
       model: 'deepseek-chat', needKey: true, jsonMode: true
     },
+    gemini: {
+      id: 'gemini', label: 'Google Gemini（有免費額度）', labelEn: 'Google Gemini (free tier)',
+      base: 'https://generativelanguage.googleapis.com/v1beta/openai',
+      model: 'gemini-2.5-flash', needKey: true, jsonMode: false,
+      keyUrl: 'https://aistudio.google.com/apikey', freeKey: true, keyHint: 'AIza…'
+    },
     openai: {
-      id: 'openai', label: 'OpenAI 相容端點（自訂）', base: '', model: '', needKey: true, jsonMode: true
+      id: 'openai', label: 'OpenAI 相容端點（自訂）', labelEn: 'OpenAI-compatible endpoint (custom)',
+      base: '', model: '', needKey: true, jsonMode: true
     },
     ollama: {
-      id: 'ollama', label: '本機 Ollama', base: 'http://localhost:11434/v1',
+      id: 'ollama', label: '本機 Ollama', labelEn: 'Local Ollama',
+      base: 'http://localhost:11434/v1',
       model: 'qwen2.5:7b', needKey: false, jsonMode: false
     }
   };
@@ -37362,6 +37406,7 @@ if (typeof console !== 'undefined' && console.warn) {
     'aiPanel', 'btnAiToggle', 'aiToggleText', 'aiStatus', 'btnAiSettings',
     'aiDialog', 'aiProvider', 'aiBase', 'aiModel', 'aiKey', 'aiJson', 'aiAuto',
     'aiPoolNote', 'btnAiSave', 'btnAiClose', 'btnAiClearPool',
+    'aiFreeBox', 'btnAiKeyPage',
     /* ── v5 模擬試卷模式 ── */
     'modeSwitch', 'practiceMode', 'paperMode', 'btnModePractice', 'btnModePaper',
     'paperListPanel', 'paperList', 'paperEmpty',
@@ -37616,7 +37661,8 @@ if (typeof console !== 'undefined' && console.warn) {
 
   function aiProviderLabel(s) {
     var p = AI.PROVIDERS[s.provider];
-    return (p && p.label) || s.model || s.provider || '';
+    if (!p) return s.model || s.provider || '';
+    return aiProviderOptionLabel(s.provider) || s.model;
   }
 
   function aiStatusText() {
@@ -37755,16 +37801,41 @@ if (typeof console !== 'undefined' && console.warn) {
     el.aiPoolNote.textContent = (extra ? extra + ' ' : '') + (n ? T('aiPoolCount', { n: n }) : T('aiPoolNone'));
   }
 
+  /* 服務商選單的名稱（跟隨介面語言；ai.js 提供 labelEn） */
+  function aiProviderOptionLabel(id) {
+    var p = AI.PROVIDERS[id] || {};
+    return (!zh() && p.labelEn) ? p.labelEn : (p.label || id);
+  }
+
+  /* 免費 Key 引導：只有「有免費層」的服務（Google Gemini）才顯示那個區塊 */
+  var aiKeyPageUrl = '';
+  function aiFree(pid) {
+    var p = AI.PROVIDERS[pid] || {};
+    aiKeyPageUrl = p.keyUrl || '';
+    if (el.aiFreeBox) el.aiFreeBox.hidden = !(p.freeKey && aiKeyPageUrl);
+    /* 金鑰格式提示跟著服務走：Gemini 的 Key 以 AIza 開頭，不是 sk- */
+    if (el.aiKey) el.aiKey.placeholder = p.keyHint || 'sk-…';
+  }
+
+  function openAiKeyPage() {
+    if (!aiKeyPageUrl) return;
+    try {
+      if (typeof window.open === 'function') window.open(aiKeyPageUrl, '_blank', 'noopener,noreferrer');
+    } catch (e) { /* 被瀏覽器／App 容器阻擋時忽略：使用者仍可自己開網址 */ }
+  }
+
   function fillAiForm() {
     var s = AI.getSettings();
     if (el.aiProvider) {
-      if (!el.aiProvider.children.length) {
-        Object.keys(AI.PROVIDERS).forEach(function (id) {
-          var o = document.createElement('option');
-          o.value = id;
-          o.textContent = AI.PROVIDERS[id].label;
+      var ids = Object.keys(AI.PROVIDERS);
+      for (var i = 0; i < ids.length; i++) {
+        var o = el.aiProvider.children[i];
+        if (!o) {                                  /* 首次開啟才建立；之後只更新文字（可跟隨語言切換） */
+          o = document.createElement('option');
           el.aiProvider.appendChild(o);
-        });
+        }
+        o.value = ids[i];
+        o.textContent = aiProviderOptionLabel(ids[i]);
       }
       el.aiProvider.value = s.provider;
     }
@@ -37773,6 +37844,7 @@ if (typeof console !== 'undefined' && console.warn) {
     if (el.aiKey) el.aiKey.value = s.key || '';
     if (el.aiJson) el.aiJson.checked = !!s.jsonMode;
     if (el.aiAuto) el.aiAuto.checked = !!s.autoPrefetch;
+    aiFree(s.provider);
     aiPoolNote();
   }
 
@@ -37792,6 +37864,7 @@ if (typeof console !== 'undefined' && console.warn) {
     if (el.aiBase) el.aiBase.value = d.base || '';
     if (el.aiModel) el.aiModel.value = d.model || '';
     if (el.aiJson) el.aiJson.checked = !!d.jsonMode;
+    aiFree(el.aiProvider.value);
   }
 
   function saveAiForm() {
@@ -38743,6 +38816,7 @@ if (typeof console !== 'undefined' && console.warn) {
   if (el.btnAiClose) el.btnAiClose.addEventListener('click', closeAiDialog);
   if (el.btnAiSave) el.btnAiSave.addEventListener('click', saveAiForm);
   if (el.btnAiClearPool) el.btnAiClearPool.addEventListener('click', function () { clearAiPool(); });
+  if (el.btnAiKeyPage) el.btnAiKeyPage.addEventListener('click', openAiKeyPage);
   if (el.aiProvider) el.aiProvider.addEventListener('change', aiProviderChanged);
   if (el.aiDialog) el.aiDialog.addEventListener('click', function (e) {
     if (e && e.target === el.aiDialog) closeAiDialog();   /* 點背景關閉 */
