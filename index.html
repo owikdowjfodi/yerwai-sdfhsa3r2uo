@@ -35667,10 +35667,13 @@ if (typeof console !== 'undefined' && console.warn) {
   }
 
   /* ══════════════════════════════════════════════════════════════
-     顯示用數學排版：把程式碼寫法轉成 Unicode 數學寫法
-       x^2 → x²     2^(n − 1) → 2ⁿ⁻¹     x_1 → x₁     A^-1 → A⁻¹
-     只作用於「顯示文字」，不影響批改（批改仍接受 ^ 與上標字元）。
-     無法完整轉換時（例如含大寫字母或不支援的字元）保留原樣，不會出錯。
+     顯示用數學排版：把程式碼寫法轉成 Unicode 數學寫法（只改顯示，題目原文不變）
+       x^2 → x²        2^(n − 1) → 2ⁿ⁻¹     x_1 → x₁        A^-1 → A⁻¹
+       x^12 → x¹²      a^4b^2 → a⁴b²        A^T → Aᵀ        u_(n + 1) → u₍ₙ ₊ ₁₎
+       x^(1/2) → x¹⁄²  u^(−1/2) → u⁻¹⁄²      1/2 → ½         2^0.5 → 2⁰·⁵
+       sqrt(2) → √2    != → ≠   <= → ≤   -> → →   ... → …
+     只作用於「顯示文字」，不影響批改（批改仍接受 ^、_、上標與下標字元）。
+     無法完整轉換時（例如 A^C 這種沒有對應上標字母的寫法）保留原樣，不會出錯。
      ══════════════════════════════════════════════════════════════ */
   var SUP_MAP = {
     '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹',
@@ -35678,18 +35681,38 @@ if (typeof console !== 'undefined' && console.warn) {
     'n': 'ⁿ', 'i': 'ⁱ', 'a': 'ᵃ', 'b': 'ᵇ', 'c': 'ᶜ', 'd': 'ᵈ', 'e': 'ᵉ', 'f': 'ᶠ', 'g': 'ᵍ', 'h': 'ʰ',
     'j': 'ʲ', 'k': 'ᵏ', 'l': 'ˡ', 'm': 'ᵐ', 'o': 'ᵒ', 'p': 'ᵖ', 'r': 'ʳ', 's': 'ˢ', 't': 'ᵗ', 'u': 'ᵘ',
     'v': 'ᵛ', 'w': 'ʷ', 'x': 'ˣ', 'y': 'ʸ', 'z': 'ᶻ',
-    /* 已是 Unicode 上標的字元原樣保留，令 7^(n²) → 7ⁿ² 之類混合寫法也能轉換 */
+    /* 大寫上標（Unicode 只有這幾個；C、F、Q、S、X、Y、Z 沒有對應字元，遇到時原樣保留） */
+    'A': 'ᴬ', 'B': 'ᴮ', 'D': 'ᴰ', 'E': 'ᴱ', 'G': 'ᴳ', 'H': 'ᴴ', 'I': 'ᴵ', 'J': 'ᴶ', 'K': 'ᴷ', 'L': 'ᴸ',
+    'M': 'ᴹ', 'N': 'ᴺ', 'O': 'ᴼ', 'P': 'ᴾ', 'R': 'ᴿ', 'T': 'ᵀ', 'U': 'ᵁ', 'V': 'ⱽ', 'W': 'ᵂ',
+    /* 分數指數與小數指數：x^(3/2) → x³⁄²、2^0.5 → 2⁰·⁵ */
+    '/': '⁄', '.': '·',
+    /* 已是 Unicode 上標的字元原樣保留，令 7^(n²) → 7ⁿ²、x^(e^x) → xᵉˣ 之類混合寫法也能轉換 */
     '⁰': '⁰', '¹': '¹', '²': '²', '³': '³', '⁴': '⁴', '⁵': '⁵', '⁶': '⁶', '⁷': '⁷', '⁸': '⁸', '⁹': '⁹',
-    '⁺': '⁺', '⁻': '⁻', '⁼': '⁼', '⁽': '⁽', '⁾': '⁾', 'ⁿ': 'ⁿ', 'ⁱ': 'ⁱ'
+    '⁺': '⁺', '⁻': '⁻', '⁼': '⁼', '⁽': '⁽', '⁾': '⁾', 'ⁿ': 'ⁿ', 'ⁱ': 'ⁱ', '⁄': '⁄',
+    'ᵃ': 'ᵃ', 'ᵇ': 'ᵇ', 'ᶜ': 'ᶜ', 'ᵈ': 'ᵈ', 'ᵉ': 'ᵉ', 'ᶠ': 'ᶠ', 'ᵍ': 'ᵍ', 'ʰ': 'ʰ', 'ʲ': 'ʲ', 'ᵏ': 'ᵏ',
+    'ˡ': 'ˡ', 'ᵐ': 'ᵐ', 'ᵒ': 'ᵒ', 'ᵖ': 'ᵖ', 'ʳ': 'ʳ', 'ˢ': 'ˢ', 'ᵗ': 'ᵗ', 'ᵘ': 'ᵘ', 'ᵛ': 'ᵛ', 'ʷ': 'ʷ',
+    'ˣ': 'ˣ', 'ʸ': 'ʸ', 'ᶻ': 'ᶻ',
+    'ᴬ': 'ᴬ', 'ᴮ': 'ᴮ', 'ᴰ': 'ᴰ', 'ᴱ': 'ᴱ', 'ᴳ': 'ᴳ', 'ᴴ': 'ᴴ', 'ᴵ': 'ᴵ', 'ᴶ': 'ᴶ', 'ᴷ': 'ᴷ', 'ᴸ': 'ᴸ',
+    'ᴹ': 'ᴹ', 'ᴺ': 'ᴺ', 'ᴼ': 'ᴼ', 'ᴾ': 'ᴾ', 'ᴿ': 'ᴿ', 'ᵀ': 'ᵀ', 'ᵁ': 'ᵁ', 'ⱽ': 'ⱽ', 'ᵂ': 'ᵂ',
+    /* 根號與希臘字母出現在指數內時原樣保留（例如 x^(2√5)） */
+    '√': '√', 'π': 'π', 'θ': 'θ', '·': '·'
   };
   var SUB_MAP = {
     '0': '₀', '1': '₁', '2': '₂', '3': '₃', '4': '₄', '5': '₅', '6': '₆', '7': '₇', '8': '₈', '9': '₉',
-    '+': '₊', '-': '₋', '−': '₋', '=': '₌', '(': '₍', ')': '₎', ' ': ' ',
+    '+': '₊', '-': '₋', '−': '₋', '=': '₌', '(': '₍', ')': '₎', ' ': ' ', '/': '⁄',
     'a': 'ₐ', 'e': 'ₑ', 'h': 'ₕ', 'i': 'ᵢ', 'j': 'ⱼ', 'k': 'ₖ', 'l': 'ₗ', 'm': 'ₘ', 'n': 'ₙ', 'o': 'ₒ',
     'p': 'ₚ', 'r': 'ᵣ', 's': 'ₛ', 't': 'ₜ', 'u': 'ᵤ', 'v': 'ᵥ', 'x': 'ₓ',
-    /* 已是 Unicode 下標的字元原樣保留 */
+    /* 已是 Unicode 下標的字元原樣保留（上標字元不在此列：u_(n²) 若硬轉會變成 uₙ² 而誤讀成 (uₙ)²） */
     '₀': '₀', '₁': '₁', '₂': '₂', '₃': '₃', '₄': '₄', '₅': '₅', '₆': '₆', '₇': '₇', '₈': '₈', '₉': '₉',
-    '₊': '₊', '₋': '₋', '₌': '₌', '₍': '₍', '₎': '₎'
+    '₊': '₊', '₋': '₋', '₌': '₌', '₍': '₍', '₎': '₎',
+    '√': '√'
+  };
+
+  /* 常見分數的 Unicode 字形（只有這 15 個分母組合有現成符號） */
+  var VULGAR_OUT = {
+    '1/2': '½', '1/3': '⅓', '2/3': '⅔', '1/4': '¼', '3/4': '¾',
+    '1/5': '⅕', '2/5': '⅖', '3/5': '⅗', '4/5': '⅘', '1/6': '⅙', '5/6': '⅚',
+    '1/8': '⅛', '3/8': '⅜', '5/8': '⅝', '7/8': '⅞'
   };
 
   function mapToken(text, map) {
@@ -35704,21 +35727,33 @@ if (typeof console !== 'undefined' && console.warn) {
     return out;
   }
 
+  /* 數字指數／下標：可帶正負號、可多位、可帶小數（x^12 → x¹²、2^0.5 → 2⁰·⁵） */
+  var NUM_TOKEN = /^[+\-−]?\d+(?:\.\d+)?/;
+
   function convertPowers(str, marker, map) {
     var out = '', i = 0;
     while (i < str.length) {
       if (str.charAt(i) !== marker) { out += str.charAt(i); i++; continue; }
-      var j = i + 1;
-      if (str.charAt(j) === '(') {                     // x^(...) 形式：抓出對應的右括號
+      var j = i + 1, openCh = str.charAt(j);
+      if (openCh === '(' || openCh === '{') {          // x^(...) 或 x^{...} 形式：抓出對應的右括號
+        var closeCh = openCh === '(' ? ')' : '}';
         var depth = 0, k = j, close = -1;
         for (; k < str.length; k++) {
-          if (str.charAt(k) === '(') depth++;
-          else if (str.charAt(k) === ')') { depth--; if (depth === 0) { close = k; break; } }
+          if (str.charAt(k) === openCh) depth++;
+          else if (str.charAt(k) === closeCh) { depth--; if (depth === 0) { close = k; break; } }
         }
         if (close < 0) { out += str.slice(i); break; }
-        var whole = mapToken(str.slice(j + 1, close), map);
+        var inner = str.slice(j + 1, close);
+        if (inner.indexOf(marker) >= 0) inner = convertPowers(inner, marker, map);   // 巢狀寫法：7^(n^2) → 7ⁿ²
+        var whole = mapToken(inner, map);
         if (whole === null) { out += str.slice(i, close + 1); i = close + 1; continue; }
         out += whole; i = close + 1; continue;
+      }
+      /* 數字指數：數字會自然斷開，後面接字母也不會誤讀（a^4b^2 → a⁴b²、28k^2x^2 → 28k²x²） */
+      var num = NUM_TOKEN.exec(str.slice(j));
+      if (num) {
+        var numMapped = mapToken(num[0], map);
+        if (numMapped !== null) { out += numMapped; i = j + num[0].length; continue; }
       }
       var single = str.charAt(j);
       if (single === '+' || single === '-' || single === '−') {      // 帶正負號的指數，如 ^-1
@@ -35728,15 +35763,73 @@ if (typeof console !== 'undefined' && console.warn) {
         out += map[single] + map[digit]; i = j + 2; continue;
       }
       if (!map[single] || single === ' ') { out += marker; i++; continue; }
-      if (/[A-Za-z0-9]/.test(str.charAt(j + 1))) { out += marker; i++; continue; }  // 避免 x^2y 之類誤轉
+      if (/[A-Za-z0-9]/.test(str.charAt(j + 1))) { out += marker; i++; continue; }  // 避免 x^n2 之類誤轉
       out += map[single]; i = j + 1;
     }
     return out;
   }
 
+  /* ── 顯示用：簡單分數 → Unicode 分數字（1/2 → ½；沒有字形時保留原樣） ── */
+  function convertSimpleFractions(str) {
+    var out = '', i = 0;
+    while (i < str.length) {
+      var ch = str.charAt(i);
+      if (ch >= '1' && ch <= '9') {
+        var m = /^([1-9])\s*\/\s*([1-9])(?![\d./])/.exec(str.slice(i));
+        var prev = i > 0 ? str.charAt(i - 1) : '';
+        if (m && !/[\d./]/.test(prev)) {
+          var glyph = VULGAR_OUT[m[1] + '/' + m[2]];
+          if (glyph) { out += glyph; i += m[0].length; continue; }
+        }
+      }
+      out += ch; i++;
+    }
+    return out;
+  }
+
+  /* ── 顯示用：sqrt(2) → √2、sqrt(x + 1) → √(x + 1) ── */
+  function convertSqrt(str) {
+    var re = /\bsqrt\s*\(/gi, out = '', last = 0, m;
+    while ((m = re.exec(str))) {
+      var open = m.index + m[0].length - 1;            // '(' 的位置
+      var depth = 0, close = -1;
+      for (var k = open; k < str.length; k++) {
+        if (str.charAt(k) === '(') depth++;
+        else if (str.charAt(k) === ')') { depth--; if (depth === 0) { close = k; break; } }
+      }
+      if (close < 0) break;
+      var inner = str.slice(open + 1, close);
+      out += str.slice(last, m.index);
+      out += /^[\d.]+$|^[A-Za-z]$|^[πθ]$/.test(inner.trim()) ? '√' + inner.trim() : '√(' + inner + ')';
+      last = close + 1;
+      re.lastIndex = close + 1;
+    }
+    return out + str.slice(last);
+  }
+
+  /* ── 顯示用：程式碼符號 → 數學符號 ── */
+  function convertOperators(str) {
+    return str
+      .replace(/!=(?!=)/g, '≠')
+      .replace(/<=(?!=)/g, '≤')
+      .replace(/>=/g, '≥')
+      .replace(/->+/g, '→')
+      .replace(/=>/g, '⇒')
+      .replace(/\.\.\./g, '…')
+      /* a * b → a × b（前後要是數學符號；**粗體** 這類寫法不會被動到） */
+      .replace(/([0-9A-Za-z)\]²³⁴⁵⁶⁷⁸⁹πθ√])[ \t]*\*(?![*=])[ \t]*(?=[0-9A-Za-z(\[πθ√])/g, '$1 × ')
+      /* 數字之間的減號 → 數學減號（2 - 5x → 2 − 5x）；e-mail、odd-power、3-D 這類連字號不受影響 */
+      .replace(/([0-9)\]²³⁴⁵⁶⁷⁸⁹])([ \t]*-[ \t]*)(?=[0-9])/g, function (m, a, mid) {
+        return a + mid.replace('-', '\u2212');
+      });
+  }
+
   function mathify(str) {
     if (typeof str !== 'string' || !str) return str;
-    return convertPowers(convertPowers(str, '^', SUP_MAP), '_', SUB_MAP);
+    var s = convertSqrt(str);
+    s = convertPowers(convertPowers(s, '^', SUP_MAP), '_', SUB_MAP);
+    s = convertSimpleFractions(s);
+    return convertOperators(s);
   }
 
   var api = {
@@ -36435,28 +36528,79 @@ if (typeof console !== 'undefined' && console.warn) {
     '0': '\u2070', '1': '\u00b9', '2': '\u00b2', '3': '\u00b3', '4': '\u2074',
     '5': '\u2075', '6': '\u2076', '7': '\u2077', '8': '\u2078', '9': '\u2079',
     '+': '\u207a', '-': '\u207b', '=': '\u207c', '(': '\u207d', ')': '\u207e',
-    n: '\u207f', i: '\u2071', x: '\u02e3', k: '\u1d4f'
+    n: '\u207f', i: '\u2071', x: '\u02e3', k: '\u1d4f',
+    /* 已是 Unicode 上標的字元原樣保留（令巢狀寫法 7^(n^2) → 7ⁿ² 也能轉） */
+    '\u2070': '\u2070', '\u00b9': '\u00b9', '\u00b2': '\u00b2', '\u00b3': '\u00b3', '\u2074': '\u2074',
+    '\u2075': '\u2075', '\u2076': '\u2076', '\u2077': '\u2077', '\u2078': '\u2078', '\u2079': '\u2079',
+    '\u207a': '\u207a', '\u207b': '\u207b', '\u207c': '\u207c', '\u207d': '\u207d', '\u207e': '\u207e',
+    '\u207f': '\u207f', '\u2071': '\u2071', '\u02e3': '\u02e3', '\u1d4f': '\u1d4f'
   };
   var SUB_MAP = {
     '0': '\u2080', '1': '\u2081', '2': '\u2082', '3': '\u2083', '4': '\u2084',
     '5': '\u2085', '6': '\u2086', '7': '\u2087', '8': '\u2088', '9': '\u2089',
     '+': '\u208a', '-': '\u208b', '=': '\u208c', '(': '\u208d', ')': '\u208e',
-    n: '\u2099', a: '\u2090', i: '\u1d62', k: '\u2096', x: '\u2093'
+    n: '\u2099', a: '\u2090', i: '\u1d62', k: '\u2096', x: '\u2093',
+    /* 已是 Unicode 下標的字元原樣保留（上標字元不在此列：u_(n²) 會誤讀成 (uₙ)²） */
+    '\u2080': '\u2080', '\u2081': '\u2081', '\u2082': '\u2082', '\u2083': '\u2083', '\u2084': '\u2084',
+    '\u2085': '\u2085', '\u2086': '\u2086', '\u2087': '\u2087', '\u2088': '\u2088', '\u2089': '\u2089',
+    '\u208a': '\u208a', '\u208b': '\u208b', '\u208c': '\u208c', '\u208d': '\u208d', '\u208e': '\u208e',
+    '\u2099': '\u2099', '\u2090': '\u2090', '\u1d62': '\u1d62', '\u2096': '\u2096', '\u2093': '\u2093'
   };
   function scriptMap(s, map) {
     var out = '';
     for (var i = 0; i < s.length; i++) out += (map[s.charAt(i)] || s.charAt(i));
     return out;
   }
-  /* x^2 → x²、x^{n+1} → xⁿ⁺¹、x_1 → x₁（只在有上下標字元可對應時才轉） */
+  /* 群組內只要有一個字元沒有對應的上下標字形，整段就保留原樣
+     （避免出現 x¹2、A^T → AT、u₍n + 1) 這類錯誤）。空白會被略過：
+     u_(n + 1) → uₙ₊₁；巢狀寫法 7^(n^2) → 7ⁿ²。 */
+  function hasUnmapped(s, map) {
+    for (var i = 0; i < s.length; i++) { if (!map[s.charAt(i)]) return true; }
+    return false;
+  }
+  function scriptGroup(s, marker, map) {
+    var out = '', i = 0;
+    while (i < s.length) {
+      if (s.charAt(i) !== marker) { out += s.charAt(i); i++; continue; }
+      var j = i + 1, open = s.charAt(j);
+      if (open === '(' || open === '{') {
+        var closeCh = open === '(' ? ')' : '}', depth = 0, close = -1;
+        for (var k = j; k < s.length; k++) {
+          if (s.charAt(k) === open) depth++;
+          else if (s.charAt(k) === closeCh) { depth--; if (depth === 0) { close = k; break; } }
+        }
+        if (close < 0) { out += s.slice(i); break; }
+        var body = s.slice(j + 1, close);
+        if (body.indexOf(marker) >= 0) body = scriptGroup(body, marker, map);
+        var tight = body.replace(/[ \t]/g, '');
+        out += hasUnmapped(tight, map) ? s.slice(i, close + 1) : scriptMap(tight, map);
+        i = close + 1; continue;
+      }
+      var digits = /^[0-9]+/.exec(s.slice(j));
+      if (digits) {
+        out += scriptMap(digits[0], map);            // x^12 → x¹²（多位數字）
+        i = j + digits[0].length; continue;
+      }
+      var ch = s.charAt(j);
+      if (ch && map[ch] && !/[0-9A-Za-z]/.test(s.charAt(j + 1) || '')) { out += map[ch]; i = j + 1; continue; }
+      out += marker; i++;                             // 沒有對應字形：連同 ^ 一起保留原樣
+    }
+    return out;
+  }
+  /* x^2 → x²、x^{n+1} → xⁿ⁺¹、x_1 → x₁ */
   function mathScripts(s) {
     s = str(s);
-    s = s.replace(/\^\{([^{}]{1,8})\}|\^([0-9a-zA-Z+\-()])/g, function (m, a, b) { return scriptMap(a || b, SUP_MAP); });
-    s = s.replace(/_\{([^{}]{1,8})\}|_([0-9a-zA-Z+\-()])/g, function (m, a, b) { return scriptMap(a || b, SUB_MAP); });
+    s = scriptGroup(s, '^', SUP_MAP);
+    s = scriptGroup(s, '_', SUB_MAP);
     return s;
   }
   function figText(s) {
-    s = mathScripts(cleanMath(s));
+    s = str(s);
+    /* App 內已載入 grader.js 時直接用它的 mathify（與題目內文完全同一套排版）；
+       獨立使用 ai.js 時才退回本檔的 mathScripts */
+    var conv = (root && root.M2Grader && typeof root.M2Grader.mathify === 'function')
+      ? root.M2Grader.mathify : mathScripts;
+    s = conv(cleanMath(s));
     /* 負號用 Unicode 減號（−）而不是程式碼的連字號，看起來才是數學符號 */
     s = s.replace(/(^|[\s(,=[{])-(?=[0-9])/g, '$1\u2212');
     return s;
